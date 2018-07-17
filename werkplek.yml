@@ -23,13 +23,15 @@
     my_users:
       - chantal
       - chantalthuis
+    my_configfiles:
+      - .bashrc
+      - .git-prompt.sh
 
   tasks:
     - name: ensure packages
       dnf:
-        name: "{{ item }}"
+        name: "{{ my_packages }}"
         state: present
-      loop: "{{ q( 'items', my_packages ) }}"
       tags: package
 
     - name: ensure users
@@ -39,4 +41,18 @@
         append: true
         shell: /bin/bash
         state: present
-      loop: "{{ q( 'items', my_users ) }}"
+      loop: "{{ my_users }}"
+      tags: users
+
+    - name: copy git prompt and bashrc
+      copy:
+        src: "{{ item[0] }}"
+        dest: "/home/{{ item[1] }}/{{ item[0] }}"
+        owner: "{{ item[1] }}"
+        group: "{{ item[1] }}"
+        mode: u=rw,g=r,o=r
+      loop: "{{ q('nested',
+        my_configfiles,
+        my_users ) }}" 
+      tags: userfiles
+
