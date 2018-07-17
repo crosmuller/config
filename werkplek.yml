@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+  become: True
+  become_user: root
+  vars:
+    my_packages:
+      - bind-utils
+      - firefox
+      - git
+      - google-chrome-stable
+      - httpd
+      - kate
+      - libreoffice
+      - lightning
+      - mariadb-server
+      - phpMyAdmin
+      - thunderbird
+      - tmux
+      - unzip
+      - xsane
+      - wget
+      - zip
+    my_users:
+      - chantal
+      - chantalthuis
+
+  tasks:
+    - name: ensure packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ q( 'items', my_packages ) }}"
+      tags: package
+
+    - name: ensure users
+      user:
+        name:  "{{ item }}"
+        groups: wheel
+        append: true
+        shell: /bin/bash
+        state: present
+      loop: "{{ q( 'items', my_users ) }}"
