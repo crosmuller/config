@@ -10,6 +10,5 @@ fi
 
 # User specific aliases and functions
 source ~/.git-prompt.sh
-#PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
-PS1='[\u@\h \W\e[92m$(__git_ps1 " (%s)")\e[0m]\$ '
+PS1='[\u@\h \W\[\033[34m\]$(__git_ps1 " (%s)")\[\033[00m\]]\$ '
 GIT_PS1_SHOWCOLORHINTS=true
