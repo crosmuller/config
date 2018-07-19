@@ -57,38 +57,4 @@
         my_users ) }}" 
       tags: userfiles
 
-    # Creating a thunderbird profile directory, profiles.ini
-    # and copying prefs.js should be enough to start up
-    # thunderbird with the accounts I want.
-    # Thunderbird creates the rest of the profile files
-    # on the first startup.
-
-    - name: create thunderbird directory 
-      file:
-        path: "/home/{{item}}/.thunderbird/{{item}}.default"
-        state: directory
-        recurse: true
-        owner: "{{ item }}"
-        group: "{{ item }}"
-      loop: "{{ my_users }}"
-      tags: thunderbird
-
-    - name: copy thunderbird prefs
-      template:
-        src: "prefs.js.j2"
-        dest: "/home/{{item}}/.thunderbird/{{item}}.default/prefs.js"
-        owner: "{{ item }}"
-        group: "{{ item }}"
-        mode: u=rw,g=r,o=r
-      loop: "{{ my_users }}"
-      tags: thunderbird
-    
-    - name: copy thunderbird profile
-      copy:
-        src: profiles.ini
-        dest: "/home/{{item}}/.thunderbird/profiles.ini"
-        owner: "{{ item }}"
-        group: "{{ item }}"
-        mode: u=rw,g=r,o=r
-      tags: thunderbird
 
